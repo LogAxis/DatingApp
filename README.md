@@ -68,3 +68,187 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# DatingLeVava Setup Guide
+
+This guide outlines the steps to set up and launch the **DatingLeVava** project, including its frontend, backend, and database.
+
+---
+
+## Prerequisites
+
+Before starting, ensure you have the following installed:
+- **Node.js** (LTS version recommended)
+- **MySQL** (with access to a database client like MySQL Workbench)
+- **Git**
+- **npm** (comes with Node.js)
+- **React Native CLI** (for frontend setup if using React Native)
+
+---
+
+## 1. Backend Setup
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/your-username/DatingLeVava-backend.git
+cd DatingLeVava-backend
+```
+
+### Step 2: Install Dependencies
+```bash
+npm install
+```
+
+### Step 3: Configure Environment Variables
+Create a `.env` file in the root directory with the following variables:
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=yourpassword
+DB_NAME=datinglevava
+JWT_SECRET=yourjwtsecret
+PORT=5000
+```
+Adjust these values as necessary to match your MySQL and project configuration.
+
+### Step 4: Run the Server
+Start the backend server:
+```bash
+npm start
+```
+The backend server will be running on `http://localhost:5000`.
+
+---
+
+## 2. Frontend Setup
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/your-username/DatingLeVava-frontend.git
+cd DatingLeVava-frontend
+```
+
+### Step 2: Install Dependencies
+```bash
+npm install
+```
+
+### Step 3: Configure Environment Variables
+Create a `.env` file in the root directory of the frontend with:
+```env
+REACT_APP_API_URL=http://localhost:5000
+```
+Adjust the URL if the backend is running on a different host or port.
+
+### Step 4: Run the Frontend
+Start the React app:
+```bash
+npm start
+```
+The frontend will be running on `http://localhost:3000`.
+
+---
+
+## 3. Database Setup
+
+### Step 1: Create the Database
+Run the following script in your MySQL client to create the database and its schema:
+
+```sql
+CREATE DATABASE IF NOT EXISTS datinglevava;
+USE datinglevava;
+
+-- Users table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    bio TEXT,
+    age INT,
+    gender ENUM('Male', 'Female', 'Other'),
+    location VARCHAR(255),
+    profile_picture VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Interests table
+CREATE TABLE interests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    interest_name VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- User interests table
+CREATE TABLE user_interests (
+    user_id INT,
+    interest_id INT,
+    PRIMARY KEY (user_id, interest_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (interest_id) REFERENCES interests(id) ON DELETE CASCADE
+);
+
+-- Matches table
+CREATE TABLE user_matches (
+    user1_id INT,
+    user2_id INT,
+    matched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user1_id, user2_id),
+    FOREIGN KEY (user1_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user2_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Membership tiers table
+CREATE TABLE memberships (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNIQUE,
+    tier ENUM('Free', 'Plus', 'Premium') DEFAULT 'Free',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+### Step 2: Populate Initial Data (Optional)
+Insert sample interests:
+
+```sql
+INSERT INTO interests (interest_name) VALUES
+('Hiking'),
+('Cooking'),
+('Photography'),
+('Traveling'),
+('Reading'),
+('Gaming'),
+('Fitness'),
+('Music'),
+('Dancing'),
+('Yoga');
+```
+
+---
+
+## 4. Running the Application
+
+1. Start the **backend** server (ensure the database is running):
+   ```bash
+   npm start
+   ```
+
+2. Start the **frontend** React app:
+   ```bash
+   npm start
+   ```
+
+3. Open the browser and navigate to `http://localhost:3000` to view the application.
+
+---
+
+## Troubleshooting
+
+- **Database connection error**: Ensure the MySQL service is running and the `.env` file has correct credentials.
+- **CORS issues**: Verify the backend includes proper CORS settings to allow requests from the frontend.
+- **API errors**: Ensure the backend server is running and matches the `REACT_APP_API_URL` in the frontend `.env` file.
+
+---
+
+Enjoy building and using **DatingLeVava**!
+
