@@ -1,25 +1,25 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Link, NavLink, Navigate } from "react-router-dom";
+import { jwtDecode} from 'jwt-decode';  // Import jwt-decode to decode JWT token
 
 class HeaderThree extends Component {
     constructor(props) {
         super(props);
         this.state = {
             redirect: false,
+            membershipTierId: null,  // State to store membership tier
         };
     }
 
-    // Logout function
-    handleLogout = () => {
-        // Remove token from localStorage
-        localStorage.removeItem('token');
-        
-        // Set redirect state to true to trigger navigation to the login page
-        this.setState({ redirect: true });
-    };
-
-    // Lifecycle method to handle scroll event
     componentDidMount() {
+        // Decode token to get membership tier
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decoded = jwtDecode(token);
+            this.setState({ membershipTierId: decoded.membership_tier_id });
+        }
+
+        // Add scroll event listener
         window.addEventListener('scroll', this.handleScroll);
     }
 
@@ -27,6 +27,12 @@ class HeaderThree extends Component {
         // Remove scroll event listener to prevent memory leaks
         window.removeEventListener('scroll', this.handleScroll);
     }
+
+    handleLogout = () => {
+        // Remove token from localStorage and redirect
+        localStorage.removeItem('token');
+        this.setState({ redirect: true });
+    };
 
     handleScroll = () => {
         const header = document.querySelector('.header');
@@ -41,8 +47,10 @@ class HeaderThree extends Component {
     };
 
     render() {
+        const { redirect, membershipTierId } = this.state;
+
         // Redirect to login page after logout
-        if (this.state.redirect) {
+        if (redirect) {
             return <Navigate to="/" />;
         }
 
@@ -51,7 +59,9 @@ class HeaderThree extends Component {
                 <div className="header__bottom">
                     <div className="container">
                         <nav className="navbar navbar-expand-lg">
-                            <Link className="navbar-brand" to="/Dashboard"><img src="assets/images/logo/logo.png" alt="logo" /></Link>
+                            <Link className="navbar-brand" to="/Dashboard">
+                                <img src="assets/images/logo/logo.png" alt="logo" />
+                            </Link>
                             <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                                 aria-label="Toggle navigation">
@@ -63,10 +73,18 @@ class HeaderThree extends Component {
                                         <li><NavLink to="/Dashboard">Home</NavLink></li>
                                         <li><NavLink to="/ProfileView">Profile</NavLink></li>
                                         <li><NavLink to="/Membership">Membership</NavLink></li>
+
+                                        {/* Conditionally render Chat and Matched links based on membership tier */}
+                                        {membershipTierId > 1 && (
+                                            <>
+                                                <li><NavLink to="/chat">Chat</NavLink></li>
+                                                <li><NavLink to="/matched">Matched</NavLink></li>
+                                            </>
+                                        )}
                                     </ul>
                                 </div>
-                                
-                                {/* Change My Account button to Logout */}
+
+                                {/* Logout button */}
                                 <div className="header__more">
                                     <button className="default-btn" onClick={this.handleLogout}>Logout</button>
                                 </div>

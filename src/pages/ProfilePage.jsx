@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import HeaderThree from '../Components/layout/headerthree';
 
 const ProfilePage = () => {
-    const { id } = useParams();  // Get the user's ID from the URL
+    const { id } = useParams();
     const [profile, setProfile] = useState(null);
     const [interests, setInterests] = useState([]);
     const [error, setError] = useState(null);
@@ -12,7 +12,6 @@ const ProfilePage = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        // Fetch the profile and interests data
         axios.get(`http://localhost:5000/users/profile/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -28,60 +27,122 @@ const ProfilePage = () => {
         });
     }, [id]);
 
+    const handleLike = async () => {
+        const token = localStorage.getItem('token');
+        
+        try {
+            await axios.post(
+                'http://localhost:5000/users/like',
+                { likedUserId: id },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            alert("You've liked this profile!");
+        } catch (error) {
+            console.error('Error liking profile:', error);
+            setError('Failed to like profile.');
+        }
+    };
+
     if (error) return <p>{error}</p>;
     if (!profile) return <p>Loading...</p>;
 
     return (
         <Fragment>
-            <HeaderThree/>
+           
             <div className="container mt-5">
-                <div className="card shadow-lg p-4">
-                    <h2 className="text-center mb-4">{profile.name} {profile.surname}'s Profile</h2>
-                    <div className="text-center mb-4">
-                        {profile.profile_picture ? (
+                <div className="card shadow-lg p-4" style={{
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    maxWidth: '600px',
+                    margin: '0 auto',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                    textAlign: 'left'
+                }}>
+                    <div style={{ position: 'relative' }}>
+                        {profile?.profile_picture ? (
                             <img
-                                src={profile.profile_picture}  // Use the image URL for rendering
+                                src={profile.profile_picture}
                                 alt={`${profile.name}'s profile`}
-                                style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '50%' }}
+                                style={{
+                                    width: '100%',
+                                    height: '400px',
+                                    objectFit: 'cover',
+                                }}
                             />
                         ) : (
                             <div
                                 style={{
-                                    width: '150px',
-                                    height: '150px',
+                                    width: '100%',
+                                    height: '400px',
                                     backgroundColor: '#ddd',
-                                    borderRadius: '50%',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    fontSize: '18px',
+                                    fontSize: '24px',
                                     color: '#666',
                                 }}
                             >
                                 No Image
                             </div>
                         )}
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: '0',
+                                width: '100%',
+                                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent)',
+                                color: '#fff',
+                                padding: '20px',
+                                textAlign: 'left',
+                            }}
+                        >
+                            <h2 className="mb-1" style={{ fontWeight: 'bold' }}>{profile?.name} {profile?.surname}</h2>
+                            <p>{profile?.bio || 'No bio available'}</p>
+                        </div>
                     </div>
 
-                    <div className="profile-info text-center">
-                        <p><strong>Bio:</strong> {profile.bio || 'No bio available'}</p>
-                        <p><strong>Age:</strong> {profile.age || 'N/A'}</p>
-                        <p><strong>Gender:</strong> {profile.gender || 'N/A'}</p>
-                        <p><strong>Location:</strong> {profile.location || 'N/A'}</p>
+                    <div className="profile-info mt-4" style={{ textAlign: 'left' }}>
+                        <p><strong>Age:</strong> {profile?.age || 'N/A'}</p>
+                        <p><strong>Gender:</strong> {profile?.gender || 'N/A'}</p>
+                        <p><strong>Location:</strong> {profile?.location || 'N/A'}</p>
                     </div>
 
-                    <h4 className="text-center mt-4">Interests</h4>
-                    <ul className="list-inline text-center">
+                    <h4 className="mt-4" style={{ textAlign: 'left' }}>Interests</h4>
+                    <ul className="list-inline" style={{ textAlign: 'left' }}>
                         {interests.length > 0 ? (
                             interests.map(interest => (
-                                <li key={interest.id} className="list-inline-item badge bg-secondary m-2 p-2">
+                                <li key={interest.id} className="list-inline-item badge m-2 p-2" style={{
+                                    backgroundColor: '#e0e0e0',
+                                    color: '#333',
+                                    borderRadius: '20px',
+                                    fontSize: '0.9rem',
+                                    padding: '10px 15px',
+                                }}>
                                     {interest.name}
                                 </li>
                             ))
                         ) : (
-                            <p className="text-center">No interests selected.</p>
+                            <p>No interests selected.</p>
                         )}
                     </ul>
+
+                    <div className="text-center mt-4">
+                        <button onClick={handleLike} className="btn" style={{
+                            backgroundColor: '#ff6b6b',
+                            color: 'white',
+                            padding: '10px 20px',
+                            fontSize: '1.1rem',
+                            borderRadius: '25px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                            cursor: 'pointer',
+                        }}>
+                            Like
+                        </button>
+                    </div>
                 </div>
             </div>
         </Fragment>

@@ -74,7 +74,7 @@ const ProfileCompletion = () => {
         }
       }
 
-      // Send the profile data along with the token in the headers
+      // Send the profile data along with the token in the headers 'http://datinglevava.dedicated.co.za:5000:5000/users/profile-completion
       await axios.post('http://localhost:5000/users/profile-completion', {
         bio,
         age,

@@ -25,7 +25,7 @@ class HeaderOne extends Component {
                             <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                                 <div className="navbar-nav mainmenu">
                                     <ul>
-                                    <li><NavLink to="/homethree">Home</NavLink></li>
+                                    <li><NavLink to="/">Home</NavLink></li>
                                    
                                     </ul>
                                 </div>

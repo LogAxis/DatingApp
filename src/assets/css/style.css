@@ -6524,3 +6524,24 @@ a[class*=lightcase-icon-] {
 }
 
 /*# sourceMappingURL=style.css.map */
+.interest-list-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 columns */
+  grid-template-rows: repeat(2, auto); /* 2 rows */
+  gap: 10px;
+  max-width: 100%;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input {
+  transform: scale(1.2);
+  margin-right: 8px;
+}
+
+.form-check-label {
+  font-size: 0.9rem;
+}

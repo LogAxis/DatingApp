@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.interest-list {
+  max-width: 100%;
+  overflow-x: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+.form-check {
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+.form-check-input {
+  transform: scale(1.2);
+}
+
+.form-check-label {
+  font-size: 1rem;
+}
+

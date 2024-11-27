@@ -1,32 +1,34 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import zxcvbn from 'zxcvbn';  // Import zxcvbn for password strength
+import zxcvbn from 'zxcvbn';  // For password strength check
 import { useNavigate } from 'react-router-dom';
+import { initializeSendBirdUser } from '../Services/sendbirdInit';  // Import SendBird initialization
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordStrength, setPasswordStrength] = useState(null);  // Password strength score
-  const [passwordsMatch, setPasswordsMatch] = useState(true);  // Check if passwords match
+  const [passwordStrength, setPasswordStrength] = useState(null);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const navigate = useNavigate();
 
-  // Update password strength score dynamically as user types
+  // Handle password strength update
   const handlePasswordChange = (e) => {
     const { value } = e.target;
     setPassword(value);
-    const strengthResult = zxcvbn(value);  // Calculate password strength
+    const strengthResult = zxcvbn(value);
     setPasswordStrength(strengthResult.score);
   };
 
-  // Check if the confirm password matches the original password
+  // Check confirm password match
   const handleConfirmPasswordChange = (e) => {
     const { value } = e.target;
     setConfirmPassword(value);
     setPasswordsMatch(password === value);
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,16 +38,22 @@ const Register = () => {
     }
 
     try {
+      // Register user on the backend
       const response = await axios.post('http://localhost:5000/register', {
         name,
         email,
         password,
       });
 
-      // Store the JWT token in localStorage
+      const uid = String(response.data.userId);  // Convert userId to string for SendBird registration
+
+      // Register user on SendBird
+      await initializeSendBirdUser(uid, name,null);
+
+      // Store the JWT token
       localStorage.setItem('token', response.data.token);
 
-      // Redirect to the profile completion page after successful registration
+      // Redirect to profile completion page
       navigate('/Profileview');
     } catch (error) {
       console.error('Error during registration:', error);
@@ -53,7 +61,7 @@ const Register = () => {
     }
   };
 
-  // Function to display password strength feedback
+  // Helper functions for password strength feedback
   const getPasswordStrengthText = (score) => {
     switch (score) {
       case 0:
@@ -70,7 +78,6 @@ const Register = () => {
     }
   };
 
-  // Function to set strength bar color based on score
   const getStrengthBarColor = (score) => {
     switch (score) {
       case 0:
@@ -105,11 +112,10 @@ const Register = () => {
       </div>
       <div className="container">
         <div className="row">
-          <div className="image"></div>
           <div className="col-lg-7">
             <div className="log-reg-inner">
               <div className="section-header">
-                <h2 className="title">Welcome to Ollya</h2>
+                <h2 className="title">Welcome to Dating Le Vava</h2>
                 <p>Let's create your profile! Just fill in the fields below, and we’ll get a new account.</p>
               </div>
               <div className="main-content">
@@ -119,7 +125,6 @@ const Register = () => {
                     <label>Username*</label>
                     <input
                       type="text"
-                      name="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Enter Your Username *"
@@ -131,7 +136,6 @@ const Register = () => {
                     <label>Email Address*</label>
                     <input
                       type="email"
-                      name="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter Your Email *"
@@ -140,19 +144,17 @@ const Register = () => {
                     />
                   </div>
 
-                  {/* Password with Strength Meter */}
+                  {/* Password Field with Strength Meter */}
                   <div className="form-group">
                     <label>Password*</label>
                     <input
                       type="password"
-                      name="password"
                       value={password}
-                      onChange={handlePasswordChange}  // Update password and strength
+                      onChange={handlePasswordChange}
                       placeholder="Enter Your Password *"
                       className="my-form-control"
                       required
                     />
-                    {/* Password strength meter */}
                     {passwordStrength !== null && (
                       <div className="mt-2">
                         <div className="progress">
@@ -166,12 +168,11 @@ const Register = () => {
                     )}
                   </div>
 
-                  {/* Confirm Password */}
+                  {/* Confirm Password Field */}
                   <div className="form-group">
                     <label>Confirm Password*</label>
                     <input
                       type="password"
-                      name="confirmPassword"
                       value={confirmPassword}
                       onChange={handleConfirmPasswordChange}
                       placeholder="Enter Your Password Again *"

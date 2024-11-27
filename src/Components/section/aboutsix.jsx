@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const title = "About Dating Le Vavas";
 const subtitle = "We aim to evoke emotions, bring people together, and craft joyful stories";
-const desc = "Tebogo Leballo, inspired by a lifelong passion for romance, launched 'DatingleVava' after seeking a date for his sister before a wedding in December 2020. <br> Despite the pandemic, he found success in connecting singles through social media, leading to requests from friends for similar help.";
+const desc = "Tebogo Leballo, inspired by a lifelong passion for romance, launched 'DatingleVava' after seeking a date for his sister before a wedding in December 2020. Despite the pandemic, he found success in connecting singles through social media, leading to requests from friends for similar help.";
 const btnText = "Get A Membership";
 const imgUrl = "assets/images/about/01.png";
 const imgAlt = "Dating Thumb";

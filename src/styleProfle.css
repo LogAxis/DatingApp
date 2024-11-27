@@ -1,0 +1,24 @@
+/* ProfileView.module.css */
+.interestListFlex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* Center align the items */
+  }
+  
+  .formCheck {
+    display: flex;
+    align-items: center;
+    flex: 1 1 150px; /* Each item takes up a min of 150px and wraps */
+    max-width: 200px; /* Maximum width to keep items consistent */
+  }
+  
+  .formCheckInput {
+    transform: scale(1.2);
+    margin-right: 8px;
+  }
+  
+  .formCheckLabel {
+    font-size: 0.9rem;
+  }
+  

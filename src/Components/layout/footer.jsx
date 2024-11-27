@@ -91,7 +91,7 @@ class Footer extends Component {
                             <div className="row g-4 justify-content-center">
                                 <div className="col-lg-6 col-12">
                                     <div className="footer__newsletter--area">
-                                        <div className="footer__newsletter--title">
+                                       {/* <div className="footer__newsletter--title">
                                             <h4>{newstitle}</h4>
                                         </div>
                                         <div className="footer__newsletter--form">
@@ -106,7 +106,7 @@ class Footer extends Component {
                                                 />
                                                 <button type="submit" className="default-btn"><span>Subscribe</span></button>
                                             </form>
-                                        </div>
+                                        </div>*/}
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-12">
