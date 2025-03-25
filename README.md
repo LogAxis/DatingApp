@@ -100,7 +100,7 @@ Create a `.env` file in the root directory with the following variables:
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=yourpassword
-DB_NAME=datinglevava
+DB_NAME=datingapp
 JWT_SECRET=yourjwtsecret
 PORT=5000
 ```
@@ -117,25 +117,20 @@ The backend server will be running on `http://localhost:5000`.
 
 ## 2. Frontend Setup
 
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/your-username/DatingLeVava-frontend.git
-cd DatingLeVava-frontend
-```
 
-### Step 2: Install Dependencies
+### Step 1: Install Dependencies
 ```bash
 npm install
 ```
 
-### Step 3: Configure Environment Variables
+### Step 2: Configure Environment Variables
 Create a `.env` file in the root directory of the frontend with:
 ```env
 REACT_APP_API_URL=http://localhost:5000
 ```
 Adjust the URL if the backend is running on a different host or port.
 
-### Step 4: Run the Frontend
+### Step 3: Run the Frontend
 Start the React app:
 ```bash
 npm start
