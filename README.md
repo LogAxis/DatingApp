@@ -69,7 +69,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-# DatingLeVava Setup Guide
+# DatingApp Setup Guide
 
 This guide outlines the steps to set up and launch the **DatingLeVava** project, including its frontend, backend, and database.
 
@@ -156,7 +156,7 @@ Run the following script in your MySQL client to create the database and its sch
 
 ```sql
 CREATE DATABASE IF NOT EXISTS datinglevava;
-USE datinglevava;
+USE datingApp;
 
 -- Users table
 CREATE TABLE users (
@@ -250,5 +250,5 @@ INSERT INTO interests (interest_name) VALUES
 
 ---
 
-Enjoy building and using **DatingLeVava**!
+Enjoy building and using **DatingApp**!
 
