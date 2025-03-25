@@ -88,18 +88,13 @@ Before starting, ensure you have the following installed:
 
 ## 1. Backend Setup
 
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/your-username/DatingLeVava-backend.git
-cd DatingLeVava-backend
-```
 
-### Step 2: Install Dependencies
+### Step 1: Install Dependencies
 ```bash
 npm install
 ```
 
-### Step 3: Configure Environment Variables
+### Step 2: Configure Environment Variables
 Create a `.env` file in the root directory with the following variables:
 ```env
 DB_HOST=localhost
@@ -111,7 +106,7 @@ PORT=5000
 ```
 Adjust these values as necessary to match your MySQL and project configuration.
 
-### Step 4: Run the Server
+### Step 3: Run the Server
 Start the backend server:
 ```bash
 npm start
